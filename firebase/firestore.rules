@@ -1,0 +1,41 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() { return request.auth != null; }
+    // Only the HQ owner can post. Change this email to match config.js.
+    function isOwner() { return signedIn() && request.auth.token.email == "leonfricker1@gmail.com"; }
+    function mine() { return request.resource.data.uid == request.auth.uid; }
+
+    match /users/{uid} {
+      allow read: if signedIn();
+      allow write: if signedIn() && request.auth.uid == uid;
+    }
+
+    // Owner-only content: everyone signed in can read it.
+    match /posts/{id}   { allow read: if signedIn(); allow write: if isOwner(); }
+    match /lessons/{id} { allow read: if signedIn(); allow write: if isOwner(); }
+    match /events/{id}  { allow read: if signedIn(); allow write: if isOwner(); }
+    match /results/{id} { allow read: if signedIn(); allow write: if isOwner(); }
+
+    // One reaction per person per item, id = itemId_uid.
+    match /reactions/{id} {
+      allow read: if signedIn();
+      allow create, update: if signedIn() && mine() && id == request.resource.data.itemId + "_" + request.auth.uid;
+      allow delete: if signedIn() && (resource.data.uid == request.auth.uid || isOwner());
+    }
+
+    match /comments/{id} {
+      allow read: if signedIn();
+      allow create: if signedIn() && mine() && request.resource.data.text is string && request.resource.data.text.size() <= 1000;
+      allow delete: if signedIn() && (resource.data.uid == request.auth.uid || isOwner());
+    }
+
+    // Requests to play: the owner sees all, each sponsor sees only their own.
+    match /requests/{id} {
+      allow read: if isOwner() || (signedIn() && resource.data.uid == request.auth.uid);
+      allow create: if signedIn() && mine() && request.resource.data.msg is string && request.resource.data.msg.size() <= 2000;
+      allow delete: if isOwner();
+    }
+  }
+}

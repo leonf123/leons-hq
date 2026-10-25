@@ -1,0 +1,16 @@
+rules_version = '2';
+service firebase.storage {
+  match /b/{bucket}/o {
+    function signedIn() { return request.auth != null; }
+    // Change this email to match config.js.
+    function isOwner() { return signedIn() && request.auth.token.email == "leonfricker1@gmail.com"; }
+
+    match /{folder}/{file} {
+      allow read: if signedIn();
+      // Owner uploads photos and videos up to 1GB each.
+      allow write: if isOwner()
+        && request.resource.size < 1024 * 1024 * 1024
+        && (request.resource.contentType.matches('video/.*') || request.resource.contentType.matches('image/.*'));
+    }
+  }
+}

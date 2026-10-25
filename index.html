@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Leon's HQ</title>
+<meta name="theme-color" content="#0F4D30">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Leon's HQ">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="icon" href="icon-192.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@500;600;700&family=Figtree:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="styles.css">
+<style>
+  html, body { margin: 0; }
+  :root { padding-top: env(safe-area-inset-top, 0px); }
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="flag" viewBox="0 0 30 34"><rect x="5" y="2" width="2.4" height="30" rx="1.2" fill="currentColor"/><path d="M7.4 3 L26 9 L7.4 15 Z" fill="#E3B12C"/><ellipse cx="6.2" cy="32" rx="5.5" ry="1.8" fill="currentColor" opacity=".35"/></symbol>
+</svg>
+
+<div class="auth" id="auth">
+  <div class="auth-box">
+    <svg class="flag" style="color:#fff"><use href="#flag"/></svg>
+    <h1 id="authTitle">Leon's HQ</h1>
+    <p id="authSub">Sponsor updates, schedule and swing tips.</p>
+    <div id="authForm"></div>
+    <div class="err" id="authErr" role="alert"></div>
+  </div>
+</div>
+
+<div class="wrap" id="app" hidden>
+  <header class="top">
+    <div class="brand"><svg class="flag" style="color:var(--ink)"><use href="#flag"/></svg><h1 id="brandName"></h1></div>
+    <div class="tools"><span class="ownerchip" id="ownerChip" hidden>You're posting</span><button class="signout" id="signOut">Sign out</button></div>
+  </header>
+  <main id="page"></main>
+</div>
+
+<nav class="tabs" id="tabs" hidden>
+  <button class="tab" data-tab="feed"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h10"/></svg>Feed</button>
+  <button class="tab" data-tab="schedule"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10h18M8 3v4M16 3v4"/></svg>Schedule</button>
+  <button class="tab" data-tab="lab"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="3" y="6" width="13" height="12" rx="2"/><path d="M16 10l5-3v10l-5-3"/></svg>Swing Lab</button>
+  <button class="tab" data-tab="results"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/></svg>Results</button>
+</nav>
+
+<div class="overlay" id="overlay" hidden><div class="sheet" id="sheet" role="dialog" aria-modal="true"></div></div>
+<div class="toast" id="toast" hidden></div>
+
+<script src="config.js"></script>
+<script type="module" src="app.js"></script>
+</body>
+</html>
